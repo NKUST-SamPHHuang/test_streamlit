@@ -1,1 +1,2 @@
 yfinance==0.1.70
+plotly==5.10.0
