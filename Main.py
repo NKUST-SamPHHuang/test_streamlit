@@ -56,7 +56,7 @@ START_str = "2019-1-1"
 
 
 # 版面設定
-st.title("股價預測")
+st.title("股市資訊")
 
 stocks = ("台積電 (2330)", "國泰金 (2882)", "台灣五十 (0050)", "國泰永續高股息 (00878)")
 selected_stock = st.selectbox("選取股票", stocks)
@@ -65,10 +65,10 @@ data_load_state = st.text(f"讀取檔案: {selected_stock}")
 data = load_data(f"{get_ticker(selected_stock)}.tw")
 data_load_state = st.text("讀取完成...")
 
+st.title("股價資訊")
 st.write(data.head())
 st.write(data.tail())
 
+st.title("股價K線")
 plot_raw_data(data)
 
-
-# 預測股價
