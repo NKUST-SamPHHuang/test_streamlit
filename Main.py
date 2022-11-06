@@ -40,7 +40,6 @@ def plot_raw_data(stock_data):
     )
     fig = go.Figure(data=stock_candle)
     fig.layout.update(
-        title_text = f"{selected_stock}",
         xaxis_rangeslider_visible = False,
     )
     st.plotly_chart(fig)
