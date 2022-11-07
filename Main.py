@@ -8,9 +8,9 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import yfinance as yf
-from datetime import date, timedelta
+from datetime import date
 from plotly import graph_objects as go
-
+from plotly.subplots import make_subplots
 
 
 # @st.cache
@@ -37,12 +37,26 @@ def plot_raw_data(stock_data):
         low=stock_data["最低價"],
         close=stock_data["收盤價"],
         increasing_line_color="red",
-        decreasing_line_color="green"
+        decreasing_line_color="green",
+        name="K線"
     )
-    fig = go.Figure(data=stock_candle)
+    volume_bar = go.Bar(x=data["日期"], y=data["成交股數"], name="成交股數")
+
+    fig = make_subplots(rows=2, cols=1, shared_xaxes=True)
+    fig.add_trace(
+        stock_candle,
+        row=1, col=1
+    )
+    fig.add_trace(
+        volume_bar,
+        row=2, col=1
+    )
     fig.layout.update(
         xaxis_rangeslider_visible = False,
     )
+    fig.update_xaxes(title_text="日期")
+    fig.update_yaxes(title_text="股價", row=1, col=1)
+    fig.update_yaxes(title_text="成交股數", row=2, col=1)
     st.plotly_chart(fig)
 
 def rename_describe(stock_data):
