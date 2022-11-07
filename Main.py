@@ -1,4 +1,8 @@
+# D:
+# cd Others
+# cd "[20221106] Streamlit Demo"
 # streamlit run Main.py
+# https://docs.streamlit.io/
 
 import numpy as np
 import pandas as pd
@@ -52,25 +56,38 @@ st.title("股市資訊")
 
 
 # 資料取得
+
 labeled_stock = st.text_input("輸入股票代號", value="0050")
+data_load_state = st.text(f"讀取檔案: {labeled_stock}")
 try:
     data = load_data(f"{labeled_stock}.tw")
+    status = True
 except:
-    pass
+    data_load_state = st.text("查詢失敗")
+    status = False
     
-data_load_state = st.text(f"讀取檔案: {labeled_stock}")
-if data.empty:
-    data_load_state = st.text(f"查無此代碼")
-else:
-    data_load_state = st.text("讀取完成...")
-data = load_data(f"{labeled_stock}.tw")
 
-# 資料呈現
-st.title("股價資訊")
-st.write(data.head())
-st.write(data.tail())
+if status:
+    if data.empty:
+        data_load_state = st.text("查無此代碼")
+    else:
+        data_load_state = st.text("讀取完成...")
 
-# 資料繪圖
-st.title("股價K線")
-plot_raw_data(data)
+    if not data.empty:
+        # 資料呈現
+        st.title("股價資訊")
+        st.subheader("最前5筆資料")
+        st.write(data.head())
+        st.subheader("最後5筆資料")
+        st.write(data.tail())
+        st.subheader(f"完整資料: {START_str} 至 {TODAY_str}")
+        st.write(data)
+
+        # 資料繪圖
+        st.title("股價K線")
+        plot_raw_data(data)
+
+
+
+
 
