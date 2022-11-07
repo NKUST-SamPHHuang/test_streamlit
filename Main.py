@@ -45,6 +45,24 @@ def plot_raw_data(stock_data):
     )
     st.plotly_chart(fig)
 
+def rename_describe(stock_data):
+    return stock_data.rename({
+        "count": "總筆數",
+        "mean": "平均值",
+        "std": "標準差",
+        "mean": "平均值",
+        "min": "最小值",
+        "25%": "第1四分位數",
+        "50%": "中位數",
+        "75%": "第3四分位數",
+        "max": "最大值",
+    }, axis=0)
+
+def reform_number_format(stock_data):
+    for x in stock_data.columns:
+        stock_data[x] = stock_data[x].map(lambda x: f"{x:,.0f}")
+    return stock_data
+
 
 # 參數設定
 TODAY_val = date.today()
@@ -80,14 +98,16 @@ if status:
         st.write(data.head())
         st.subheader("最後5筆資料")
         st.write(data.tail())
-        st.subheader(f"完整資料: {START_str} 至 {TODAY_str}")
-        st.write(data)
+        st.subheader("資料摘要")
+        st.write(reform_number_format(rename_describe(data.describe())))
+        
 
         # 資料繪圖
         st.title("股價K線")
         plot_raw_data(data)
 
-
-
+        # 完整資料呈現
+        st.subheader(f"完整資料: {START_str} 至 {TODAY_str}")
+        st.write(data)
 
 
