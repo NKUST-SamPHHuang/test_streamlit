@@ -167,7 +167,7 @@ if not data.empty:
             st.write("資料不足，無法驗證")
         else:
             fig = validation(df, forecast)
-            st.pyplot(fig, width = 120)
+            st.pyplot(fig, use_container_width=True)
 
     with st.expander("完整資料"):
         # 完整資料呈現
