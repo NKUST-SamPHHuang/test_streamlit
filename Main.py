@@ -83,45 +83,46 @@ TODAY_val = date.today()
 TODAY_str = TODAY_val.strftime("%Y-%m-%d")
 START_str = "2019-1-1"
 
-# 版面設定
-st.title("股市資訊")
+with st.spinner('股市資訊'):
+    # 版面設定
+    st.title("股市資訊")
 
 
-# 資料取得
+    # 資料取得
 
-labeled_stock = st.text_input("輸入股票代號", value="0050")
-data_load_state = st.text(f"讀取檔案: {labeled_stock}")
-try:
-    data = load_data(f"{labeled_stock}.tw")
-    status = True
-except:
-    data_load_state = st.text("查詢失敗")
-    status = False
-    
-
-if status:
-    if data.empty:
-        data_load_state = st.text("查無此代碼")
-    else:
-        data_load_state = st.text("讀取完成...")
-
-    if not data.empty:
-        # 資料呈現
-        st.title("股價資訊")
-        st.subheader("最前5筆資料")
-        st.write(data.head())
-        st.subheader("最後5筆資料")
-        st.write(data.tail())
-        st.subheader("資料摘要")
-        st.write(reform_number_format(rename_describe(data.describe())))
+    labeled_stock = st.text_input("輸入股票代號", value="0050")
+    data_load_state = st.text(f"讀取檔案: {labeled_stock}")
+    try:
+        data = load_data(f"{labeled_stock}.tw")
+        status = True
+    except:
+        data_load_state = st.text("查詢失敗")
+        status = False
         
 
-        # 資料繪圖
-        st.title("股價K線")
-        plot_raw_data(data)
+    if status:
+        if data.empty:
+            data_load_state = st.text("查無此代碼")
+        else:
+            data_load_state = st.text("讀取完成...")
 
-        # 完整資料呈現
-        st.subheader(f"完整資料: {START_str} 至 {TODAY_str}")
-        st.write(data)
+        if not data.empty:
+            # 資料呈現
+            st.title("股價資訊")
+            st.subheader("最前5筆資料")
+            st.write(data.head())
+            st.subheader("最後5筆資料")
+            st.write(data.tail())
+            st.subheader("資料摘要")
+            st.write(reform_number_format(rename_describe(data.describe())))
+            
+
+            # 資料繪圖
+            st.title("股價K線")
+            plot_raw_data(data)
+
+            # 完整資料呈現
+            st.subheader(f"完整資料: {START_str} 至 {TODAY_str}")
+            st.write(data)
 
 
